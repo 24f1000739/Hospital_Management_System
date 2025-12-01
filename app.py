@@ -693,7 +693,7 @@ def admin_appointments():
     appointments = query.order_by(Appointment.appointment_date.desc(), Appointment.created_at.desc()).all()
     return render_template("admin/appointments.html", appointments=appointments, filter_type=filter_type)
 
-
+# Milestone: Doctor Dashboard and Appointment/Treatment Management
 @app.route("/doctor/mark-complete", methods=["POST"])
 @login_required(role="doctor")
 def mark_complete_appointment():

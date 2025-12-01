@@ -21,7 +21,7 @@ The system follows the project guidelines (pure Flask/Jinja/SQLite) but still pr
   - Manage doctors: create, edit, delete, blacklist, and search by name/specialization.
   - Manage patients: edit, delete, blacklist, and search.
   - View all appointments with filters (all / upcoming / past).
-  - View complete **patient history with any doctor**.
+  - View complete **patient history with any doctor**. 
 
 - **Doctor module**
   - Personal dashboard showing upcoming appointments and assigned patients.
@@ -230,5 +230,6 @@ On first run the app will:
   - Audit tables to track appointment and history edits.
 
 This README is designed so that you can directly use it in your project submission to explain the **architecture**, **database design**, and **flow** of the Hospital Management System.
+
 
 

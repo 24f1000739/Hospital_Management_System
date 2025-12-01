@@ -220,16 +220,9 @@ On first run the app will:
 
 ---
 
-## Notes & Extension Ideas
-
-- Always change `SECRET_KEY` in `app.py` before deploying outside a classroom / local machine.
-- All application data is stored in `instance/hospital.db`; deleting this file resets the system.
-- You can extend the project by adding:
-  - File uploads for reports or prescriptions attached to `TreatmentRecord`.
-  - Notification system (email/SMS) on booking or cancellation.
-  - Audit tables to track appointment and history edits.
 
 This README is designed so that you can directly use it in your project submission to explain the **architecture**, **database design**, and **flow** of the Hospital Management System.
+
 
 
 

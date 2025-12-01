@@ -317,7 +317,7 @@ def get_current_user():
         return User.query.get(user_id)
     return None
 
-
+# Milestone: Authentication and Role-Based Access
 def login_required(role=None):
     def decorator(fn):
         @wraps(fn)

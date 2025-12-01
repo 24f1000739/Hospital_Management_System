@@ -1039,7 +1039,7 @@ def doctor_availability_view(doctor_id):
     
     return render_template("patient/doctor_availability.html", doctor=doctor, slots_by_date=slots_by_date, dates_list=dates_list)
 
-
+# Milestone: Appointment History and Conflict Prevention
 @app.route("/patient/book/<int:doctor_id>", methods=["GET", "POST"])
 @login_required(role="patient")
 def book_appointment(doctor_id):

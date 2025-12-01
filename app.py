@@ -970,7 +970,7 @@ def patient_history_view():
     
     return render_template("patient/history.html", history=history)
 
-
+# Milestone: Patient Dashboard and Appointment System
 @app.route("/patient/departments")
 @login_required(role="patient")
 def patient_departments():

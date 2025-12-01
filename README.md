@@ -221,7 +221,6 @@ On first run the app will:
 ---
 
 
-This README is designed so that you can directly use it in your project submission to explain the **architecture**, **database design**, and **flow** of the Hospital Management System.
 
 
 

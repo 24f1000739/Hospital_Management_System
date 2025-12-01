@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}Hospital Management System{% endblock %}
+{% block content %}
+  <section class="py-5 text-center">
+    <h1 class="display-5 fw-bold mb-3">Hospital Management System</h1>
+    <p class="lead text-muted">Streamline appointments, treatment notes, and communication between admins, doctors, and patients.</p>
+  </section>
+
+  <section class="row text-center g-4">
+    <div class="col-md-4">
+      <div class="card h-100 shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title text-primary">Doctors</h5>
+          <p class="display-6">{{ stats.doctors }}</p>
+          <p class="text-muted small">Specialists across {{ departments|length }} departments.</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card h-100 shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title text-success">Patients</h5>
+          <p class="display-6">{{ stats.patients }}</p>
+          <p class="text-muted small">Patients registered for seamless care.</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card h-100 shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title text-danger">Appointments</h5>
+          <p class="display-6">{{ stats.appointments }}</p>
+          <p class="text-muted small">Managed through HMS.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="mt-5">
+    <h2 class="h4 mb-3">Departments</h2>
+    <div class="row g-3">
+      {% for dept in departments %}
+        <div class="col-md-6 col-xl-3">
+          <div class="department-tile h-100 p-3 rounded shadow-sm">
+            <p class="fw-semibold mb-1">{{ dept.name }}</p>
+            <p class="text-muted small mb-0">{{ dept.description }}</p>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </section>
+{% endblock %}
+

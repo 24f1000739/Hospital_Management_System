@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block title %}Appointments{% endblock %}
+{% block content %}
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h1 class="h4 mb-0">All Appointments</h1>
+      <p class="text-muted small mb-0">Track bookings, status changes and follow-ups.</p>
+    </div>
+    <a href="{{ url_for('dashboard') }}" class="btn btn-link">Back</a>
+  </div>
+
+  <div class="card shadow-sm mb-4">
+    <div class="card-body">
+      <div class="btn-group" role="group">
+        <a href="{{ url_for('admin_appointments', filter='all') }}" class="btn btn-sm btn-{{ 'primary' if filter_type == 'all' else 'outline-primary' }}">All</a>
+        <a href="{{ url_for('admin_appointments', filter='upcoming') }}" class="btn btn-sm btn-{{ 'primary' if filter_type == 'upcoming' else 'outline-primary' }}">Upcoming</a>
+        <a href="{{ url_for('admin_appointments', filter='past') }}" class="btn btn-sm btn-{{ 'primary' if filter_type == 'past' else 'outline-primary' }}">Past</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="table-responsive">
+    <table class="table table-striped align-middle">
+      <thead class="small text-muted">
+        <tr>
+          <th>#</th>
+          <th>Patient</th>
+          <th>Doctor</th>
+          <th>Date</th>
+          <th>Slot</th>
+          <th>Status</th>
+          <th>Reason</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for appt in appointments %}
+          <tr>
+            <td>{{ loop.index }}</td>
+            <td>{{ appt.patient.full_name }}</td>
+            <td>{{ appt.doctor.full_name }}</td>
+            <td>{{ format_date(appt.appointment_date) }}</td>
+            <td>{{ appt.slot_label }}</td>
+            <td>
+              <span class="badge text-bg-{{ 'success' if appt.status == 'Completed' else 'warning' if appt.status == 'Booked' else 'secondary' }}">
+                {{ appt.status }}
+              </span>
+            </td>
+            <td class="small">{{ appt.reason or '-' }}</td>
+          </tr>
+        {% else %}
+          <tr>
+            <td colspan="7" class="text-center text-muted">No appointments found.</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}
+

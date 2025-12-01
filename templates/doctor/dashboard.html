@@ -1,0 +1,153 @@
+{% extends "base.html" %}
+{% block title %}Doctor Dashboard{% endblock %}
+{% block content %}
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="h4 mb-0">Welcome Dr. {{ g.user.full_name }}</h1>
+    <a href="{{ url_for('logout') }}" class="btn btn-outline-danger btn-sm">Logout</a>
+  </div>
+
+  <div class="card shadow-sm mb-4">
+    <div class="card-header d-flex justify-content-between align-items-center">
+      <h2 class="h6 mb-0">Upcoming Appointments</h2>
+      <a href="{{ url_for('doctor_availability') }}" class="btn btn-primary btn-sm">Provide Availability</a>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-sm align-middle">
+          <thead>
+            <tr>
+              <th>Sr No.</th>
+              <th>Date</th>
+              <th>Slot</th>
+              <th>Patient Name</th>
+              <th>Patient History</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for appt in upcoming %}
+              <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ appt.appointment_date.strftime('%d/%m/%Y') }}</td>
+                <td>{{ appt.slot_label }}</td>
+                <td>{{ appt.patient.full_name }}</td>
+                <td>
+                  <a href="{{ url_for('doctor_patient_history', appointment_id=appt.id) }}" class="btn btn-sm btn-warning">Update</a>
+                </td>
+                <td>
+                  <div class="btn-group btn-group-sm">
+                    {% if appt.status == 'Booked' %}
+                      <form method="post" action="{{ url_for('mark_complete_appointment') }}" class="d-inline">
+                        <input type="hidden" name="appointment_id" value="{{ appt.id }}">
+                        <button type="submit" class="btn btn-success">Mark as Complete</button>
+                      </form>
+                      <form method="post" action="{{ url_for('cancel_appointment') }}" class="d-inline">
+                        <input type="hidden" name="appointment_id" value="{{ appt.id }}">
+                        <button type="submit" class="btn btn-danger">Cancel</button>
+                      </form>
+                    {% else %}
+                      <span class="badge text-bg-secondary">{{ appt.status }}</span>
+                    {% endif %}
+                  </div>
+                </td>
+              </tr>
+            {% else %}
+              <tr>
+                <td colspan="6" class="text-center text-muted">No upcoming appointments.</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="card shadow-sm mb-4">
+    <div class="card-header d-flex justify-content-between align-items-center">
+      <h2 class="h6 mb-0">Recent Slot Activity</h2>
+      <small class="text-muted">Latest completions & cancellations</small>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-sm align-middle">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Slot</th>
+              <th>Patient</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for appt in recent_activity %}
+              <tr>
+                <td>{{ appt.appointment_date.strftime('%d/%m/%Y') }}</td>
+                <td>{{ appt.slot_label }}</td>
+                <td>{{ appt.patient.full_name }}</td>
+                <td>
+                  {% if appt.status == 'Cancelled' %}
+                    <span class="badge text-bg-danger">Cancelled by {{ (appt.cancelled_by or 'patient')|title }}</span>
+                  {% else %}
+                    <span class="badge text-bg-success">Completed</span>
+                  {% endif %}
+                </td>
+              </tr>
+            {% else %}
+              <tr>
+                <td colspan="4" class="text-center text-muted">No recent updates.</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="card shadow-sm mb-4">
+    <div class="card-header d-flex justify-content-between align-items-center">
+      <h2 class="h6 mb-0">Appointment Timeline</h2>
+      <small class="text-muted">Bookings, cancellations & updates</small>
+    </div>
+    <div class="card-body">
+      <ul class="list-group list-group-flush">
+        {% for event in timeline_events %}
+          <li class="list-group-item">
+            <div class="d-flex justify-content-between">
+              <div>
+                <strong>{{ event.appointment.patient.full_name if event.appointment and event.appointment.patient else 'Patient' }}</strong>
+                <span class="text-muted">• {{ event.appointment.slot_label if event.appointment else '' }}</span>
+                <div class="small text-muted">{{ event.message }}</div>
+              </div>
+              <div class="text-end small text-muted">
+                {{ event.created_at.strftime('%d/%m/%Y %I:%M %p') }}
+                {% if event.actor_role %}
+                  <div class="badge text-bg-light text-capitalize mt-1">{{ event.actor_role }}</div>
+                {% endif %}
+              </div>
+            </div>
+          </li>
+        {% else %}
+          <li class="list-group-item text-center text-muted">No activity recorded yet.</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+
+  <div class="card shadow-sm mb-4">
+    <div class="card-header">
+      <h2 class="h6 mb-0">Assigned Patients</h2>
+    </div>
+    <div class="card-body">
+      <ul class="list-group list-group-flush">
+        {% for patient in patients %}
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <span>{{ patient.full_name }}</span>
+            <a href="{{ url_for('view_patient_history_full', patient_id=patient.id) }}" class="btn btn-sm btn-primary">View History</a>
+          </li>
+        {% else %}
+          <li class="list-group-item text-center text-muted">No assigned patients.</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+{% endblock %}

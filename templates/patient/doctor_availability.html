@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% block title %}Doctor's Availability{% endblock %}
+{% block content %}
+  <div class="card shadow-sm">
+    <div class="card-header">
+      <h2 class="h6 mb-0">Dr. {{ doctor.full_name }} - Availability</h2>
+    </div>
+    <div class="card-body">
+      <form method="post" action="{{ url_for('book_appointment', doctor_id=doctor.id) }}">
+        <div class="table-responsive">
+          <table class="table table-sm table-bordered">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Morning Slot</th>
+                <th>Evening Slot</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for day_date in dates_list %}
+                {% set morning_slot_found = [] %}
+                {% set evening_slot_found = [] %}
+                {% if slots_by_date and day_date in slots_by_date %}
+                  {% for slot in slots_by_date[day_date] %}
+                    {% if '08:00' in slot.slot_label or '12:00' in slot.slot_label or 'morning' in slot.slot_label|lower or 'am' in slot.slot_label|lower %}
+                      {% if morning_slot_found.append(slot) %}{% endif %}
+                    {% endif %}
+                    {% if '04:00' in slot.slot_label or '09:00' in slot.slot_label or '16:00' in slot.slot_label or 'evening' in slot.slot_label|lower or 'pm' in slot.slot_label|lower %}
+                      {% if evening_slot_found.append(slot) %}{% endif %}
+                    {% endif %}
+                  {% endfor %}
+                {% endif %}
+                <tr>
+                  <td>{{ day_date.strftime('%d/%m/%Y') }}</td>
+                  <td>
+                    {% if morning_slot_found|length > 0 %}
+                      {% set morning_slot = morning_slot_found[0] %}
+                      {% if morning_slot.is_open %}
+                        <div class="form-check d-inline-block">
+                          <input class="form-check-input" type="radio" name="availability_id" value="{{ morning_slot.id }}" id="slot_morning_{{ day_date.strftime('%Y-%m-%d') }}" required>
+                          <label class="form-check-label btn btn-sm btn-success" for="slot_morning_{{ day_date.strftime('%Y-%m-%d') }}" style="cursor: pointer; background-color: #28a745; border-color: #28a745;">
+                            {{ morning_slot.slot_label }}
+                          </label>
+                        </div>
+                      {% else %}
+                        <span class="badge bg-danger" style="background-color: #dc3545;">{{ morning_slot.slot_label }} (Booked)</span>
+                      {% endif %}
+                    {% else %}
+                      <span class="text-muted">Not Available</span>
+                    {% endif %}
+                  </td>
+                  <td>
+                    {% if evening_slot_found|length > 0 %}
+                      {% set evening_slot = evening_slot_found[0] %}
+                      {% if evening_slot.is_open %}
+                        <div class="form-check d-inline-block">
+                          <input class="form-check-input" type="radio" name="availability_id" value="{{ evening_slot.id }}" id="slot_evening_{{ day_date.strftime('%Y-%m-%d') }}" required>
+                          <label class="form-check-label btn btn-sm btn-success" for="slot_evening_{{ day_date.strftime('%Y-%m-%d') }}" style="cursor: pointer; background-color: #28a745; border-color: #28a745;">
+                            {{ evening_slot.slot_label }}
+                          </label>
+                        </div>
+                      {% else %}
+                        <span class="badge bg-danger" style="background-color: #dc3545;">{{ evening_slot.slot_label }} (Booked)</span>
+                      {% endif %}
+                    {% else %}
+                      <span class="text-muted">Not Available</span>
+                    {% endif %}
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        <div class="mt-3 d-flex gap-2">
+          <button type="submit" class="btn btn-primary">Book</button>
+          <a href="{{ url_for('doctor_profile', doctor_id=doctor.id) }}" class="btn btn-outline-secondary">Go Back</a>
+        </div>
+      </form>
+    </div>
+  </div>
+{% endblock %}

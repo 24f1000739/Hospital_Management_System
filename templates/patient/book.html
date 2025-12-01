@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}Book Appointment{% endblock %}
+{% block content %}
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <h2 class="h6 mb-3">Book Appointment with Dr. {{ doctor.full_name }}</h2>
+      {% if slots_by_date %}
+        <div class="table-responsive">
+          <table class="table table-sm table-bordered">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Morning Slot</th>
+                <th>Evening Slot</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for date_key in slots_by_date.keys()|sort %}
+                <tr>
+                  <td>{{ date_key.strftime('%d/%m/%Y') }}</td>
+                  <td>
+                    {% for slot in slots_by_date[date_key] %}
+                      {% if '08:00' in slot.slot_label or 'morning' in slot.slot_label|lower %}
+                        <form method="post" action="{{ url_for('book_appointment', doctor_id=doctor.id) }}" class="d-inline mb-1">
+                          <input type="hidden" name="availability_id" value="{{ slot.id }}">
+                          <button type="submit" class="btn btn-sm btn-primary">{{ slot.slot_label }}</button>
+                        </form>
+                      {% endif %}
+                    {% endfor %}
+                  </td>
+                  <td>
+                    {% for slot in slots_by_date[date_key] %}
+                      {% if '04:00' in slot.slot_label or '16:00' in slot.slot_label or 'evening' in slot.slot_label|lower or '09:00' in slot.slot_label %}
+                        <form method="post" action="{{ url_for('book_appointment', doctor_id=doctor.id) }}" class="d-inline mb-1">
+                          <input type="hidden" name="availability_id" value="{{ slot.id }}">
+                          <button type="submit" class="btn btn-sm btn-primary">{{ slot.slot_label }}</button>
+                        </form>
+                      {% endif %}
+                    {% endfor %}
+                  </td>
+                  <td>
+                    <a href="{{ url_for('patient_departments') }}" class="btn btn-sm btn-outline-secondary">Back</a>
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      {% else %}
+        <p class="text-muted text-center">No available slots.</p>
+        <div class="text-center">
+          <a href="{{ url_for('patient_departments') }}" class="btn btn-outline-secondary">Go Back</a>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+{% endblock %}

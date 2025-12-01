@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Assigned Patients{% endblock %}
+{% block content %}
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="h4 mb-0">Assigned Patients</h1>
+    <a href="{{ url_for('dashboard') }}" class="btn btn-link">Back to Dashboard</a>
+  </div>
+
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <ul class="list-group list-group-flush">
+        {% for patient in patients %}
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <span>{{ patient.full_name }}</span>
+            <a href="{{ url_for('doctor_assigned_patients') }}?patient_id={{ patient.id }}" class="btn btn-sm btn-primary">View</a>
+          </li>
+        {% else %}
+          <li class="list-group-item text-center text-muted">No assigned patients.</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+{% endblock %}
+

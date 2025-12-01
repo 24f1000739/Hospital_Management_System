@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+{% block title %}Manage Doctors{% endblock %}
+{% block content %}
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h1 class="h4 mb-0">Doctors</h1>
+      <p class="text-muted small mb-0">Add, update or deactivate doctor profiles.</p>
+    </div>
+    <a href="{{ url_for('dashboard') }}" class="btn btn-link">Back to dashboard</a>
+  </div>
+
+  <div class="card shadow-sm mb-4">
+    <div class="card-body">
+      <h2 class="h6 mb-3">Add Doctor</h2>
+      <form method="post">
+        <div class="row g-3">
+          <div class="col-md-4">
+            <label class="form-label small text-uppercase text-muted">Full name</label>
+            <input type="text" name="full_name" class="form-control" required>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label small text-uppercase text-muted">Email</label>
+            <input type="email" name="email" class="form-control" required>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label small text-uppercase text-muted">Phone</label>
+            <input type="text" name="phone" class="form-control">
+          </div>
+          <div class="col-md-4">
+            <label class="form-label small text-uppercase text-muted">Specialization</label>
+            <input type="text" name="specialization" class="form-control">
+          </div>
+          <div class="col-md-2">
+            <label class="form-label small text-uppercase text-muted">Experience (yrs)</label>
+            <input type="number" min="0" name="experience_years" class="form-control">
+          </div>
+          <div class="col-md-3">
+            <label class="form-label small text-uppercase text-muted">Department</label>
+            <select class="form-select" name="department_id">
+              <option value="">Select</option>
+              {% for dept in departments %}
+                <option value="{{ dept.id }}">{{ dept.name }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="col-md-3">
+            <label class="form-label small text-uppercase text-muted">Temporary password</label>
+            <input type="text" name="password" class="form-control" placeholder="doctor123">
+          </div>
+        </div>
+        <div class="mt-3">
+          <button class="btn btn-primary">Create Doctor</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="d-flex justify-content-between align-items-center mb-2">
+    <form class="d-flex" method="get">
+      <input type="text" name="q" class="form-control" placeholder="Search by name or specialization" value="{{ request.args.get('q','') }}">
+      <button class="btn btn-outline-secondary ms-2">Search</button>
+    </form>
+    <p class="text-muted small mb-0">{{ doctors|length }} results</p>
+  </div>
+
+  <div class="table-responsive">
+    <table class="table table-hover align-middle">
+      <thead class="small text-muted">
+        <tr>
+          <th>Name</th>
+          <th>Specialization</th>
+          <th>Department</th>
+          <th>Contact</th>
+          <th>Status</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for doctor in doctors %}
+          <tr>
+            <td>
+              <div class="fw-semibold">{{ doctor.full_name }}</div>
+              <div class="small text-muted">{{ doctor.email }}</div>
+            </td>
+            <td>{{ doctor.specialization or 'General' }}</td>
+            <td>{{ doctor.department.name if doctor.department else '-' }}</td>
+            <td>{{ doctor.phone or '-' }}</td>
+            <td>
+              {% if doctor.is_active %}
+                <span class="badge text-bg-success">Active</span>
+              {% else %}
+                <span class="badge text-bg-secondary">Inactive</span>
+              {% endif %}
+            </td>
+            <td class="text-end">
+              <div class="btn-group btn-group-sm">
+                <a href="{{ url_for('edit_doctor', doctor_id=doctor.id) }}" class="btn btn-outline-primary">Edit</a>
+                <form action="{{ url_for('delete_doctor', doctor_id=doctor.id) }}" method="post" class="d-inline">
+                  <button type="submit" class="btn btn-outline-danger">Delete</button>
+                </form>
+                <form action="{{ url_for('blacklist_doctor', doctor_id=doctor.id) }}" method="post" class="d-inline">
+                  <button type="submit" class="btn btn-outline-warning">
+                    {% if doctor.is_blacklisted %}Unblacklist{% else %}Blacklist{% endif %}
+                  </button>
+                </form>
+              </div>
+            </td>
+          </tr>
+        {% else %}
+          <tr>
+            <td colspan="6" class="text-center text-muted">No doctor records.</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}
+

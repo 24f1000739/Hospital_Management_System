@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}Edit Doctor{% endblock %}
+{% block content %}
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h1 class="h5 mb-3">Edit Doctor Profile</h1>
+          <form method="post">
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label">Full name</label>
+                <input type="text" name="full_name" class="form-control" value="{{ doctor.full_name }}" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Phone</label>
+                <input type="text" name="phone" class="form-control" value="{{ doctor.phone or '' }}">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Specialization</label>
+                <input type="text" name="specialization" class="form-control" value="{{ doctor.specialization or '' }}">
+              </div>
+              <div class="col-md-3">
+                <label class="form-label">Experience (yrs)</label>
+                <input type="number" name="experience_years" min="0" class="form-control" value="{{ doctor.experience_years or '' }}">
+              </div>
+              <div class="col-md-3">
+                <label class="form-label">Department</label>
+                <select name="department_id" class="form-select">
+                  <option value="">Select</option>
+                  {% for dept in departments %}
+                    <option value="{{ dept.id }}" {% if doctor.department_id == dept.id %}selected{% endif %}>{{ dept.name }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+            <div class="mb-3 mt-3">
+              <label class="form-label">Bio</label>
+              <textarea name="bio" class="form-control" rows="3">{{ doctor.bio or '' }}</textarea>
+            </div>
+            <div class="form-check form-switch mb-3">
+              <input class="form-check-input" type="checkbox" name="is_active" value="1" {% if doctor.is_active %}checked{% endif %}>
+              <label class="form-check-label">Active</label>
+            </div>
+            <div class="d-flex justify-content-between">
+              <a href="{{ url_for('manage_doctors') }}" class="btn btn-outline-secondary">Cancel</a>
+              <button class="btn btn-primary">Save Changes</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+

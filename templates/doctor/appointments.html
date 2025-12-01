@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block title %}My Appointments{% endblock %}
+{% block content %}
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="h4 mb-0">Upcoming Appointments</h1>
+    <a href="{{ url_for('dashboard') }}" class="btn btn-link">Back</a>
+  </div>
+
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-sm align-middle">
+          <thead>
+            <tr>
+              <th>Sr No.</th>
+              <th>Patient Name</th>
+              <th>Patient History</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for appt in appointments %}
+              <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ appt.patient.full_name }}</td>
+                <td>
+                  <a href="{{ url_for('doctor_patient_history', appointment_id=appt.id) }}" class="btn btn-sm btn-primary">View</a>
+                </td>
+                <td>
+                  <div class="btn-group btn-group-sm">
+                    <form method="post" action="{{ url_for('doctor_appointments') }}" class="d-inline">
+                      <input type="hidden" name="appointment_id" value="{{ appt.id }}">
+                      <input type="hidden" name="action" value="update">
+                      <select name="status" class="form-select form-select-sm d-inline-block" style="width: auto;">
+                        <option value="Booked" {% if appt.status == 'Booked' %}selected{% endif %}>Booked</option>
+                        <option value="Completed" {% if appt.status == 'Completed' %}selected{% endif %}>Completed</option>
+                        <option value="Cancelled" {% if appt.status == 'Cancelled' %}selected{% endif %}>Cancelled</option>
+                      </select>
+                      <button type="submit" class="btn btn-outline-primary">Update</button>
+                    </form>
+                    <form method="post" action="{{ url_for('doctor_appointments') }}" class="d-inline">
+                      <input type="hidden" name="appointment_id" value="{{ appt.id }}">
+                      <input type="hidden" name="action" value="complete">
+                      <button type="submit" class="btn btn-outline-success">Mark as Complete</button>
+                    </form>
+                    <form method="post" action="{{ url_for('doctor_appointments') }}" class="d-inline">
+                      <input type="hidden" name="appointment_id" value="{{ appt.id }}">
+                      <input type="hidden" name="action" value="cancel">
+                      <button type="submit" class="btn btn-outline-danger">Cancel</button>
+                    </form>
+                  </div>
+                </td>
+              </tr>
+            {% else %}
+              <tr>
+                <td colspan="4" class="text-center text-muted">No appointments found.</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+{% endblock %}

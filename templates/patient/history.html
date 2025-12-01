@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}Patient History{% endblock %}
+{% block content %}
+  <div class="card shadow-sm">
+    <div class="card-header">
+      <div class="d-flex justify-content-between align-items-center">
+        <h2 class="h6 mb-0">Patient History</h2>
+        <a href="{{ url_for('dashboard') }}" class="btn btn-sm btn-outline-secondary">Back</a>
+      </div>
+    </div>
+    <div class="card-body">
+      {% if history %}
+        <div class="mb-3">
+          <p class="mb-1"><strong>Patient Name:</strong> {{ g.user.full_name }}</p>
+        </div>
+        <div class="table-responsive">
+          <table class="table table-sm table-bordered">
+            <thead>
+              <tr>
+                <th>Visit No.</th>
+                <th>Doctor Name</th>
+                <th>Department</th>
+                <th>Visit Type</th>
+                <th>Tests Done</th>
+                <th>Diagnosis</th>
+                <th>Prescription</th>
+                <th>Medicines</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for appt in history %}
+                {% if appt.treatment_record %}
+                  <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>Dr. {{ appt.doctor.full_name }}</td>
+                    <td>{{ appt.doctor.department.name if appt.doctor.department else 'General' }}</td>
+                    <td>{{ appt.treatment_record.visit_type if appt.treatment_record.visit_type else 'In-person' }}</td>
+                    <td>{{ appt.treatment_record.test_done if appt.treatment_record.test_done else '-' }}</td>
+                    <td>{{ appt.treatment_record.diagnosis if appt.treatment_record.diagnosis else '-' }}</td>
+                    <td>{{ appt.treatment_record.prescription if appt.treatment_record.prescription else '-' }}</td>
+                    <td>{{ appt.treatment_record.medicines if appt.treatment_record.medicines else '-' }}</td>
+                  </tr>
+                {% endif %}
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      {% else %}
+        <p class="text-muted text-center">No history available.</p>
+      {% endif %}
+    </div>
+  </div>
+{% endblock %}

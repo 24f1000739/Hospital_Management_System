@@ -1,0 +1,233 @@
+:root {
+  --hms-bg: #030617;
+  --hms-panel: rgba(9, 16, 40, 0.65);
+  --hms-outline: rgba(255, 255, 255, 0.08);
+  --hms-primary: #7c5dff;
+  --hms-secondary: #20e3b2;
+  --hms-text: #f4f6fb;
+  --hms-muted: rgba(244, 246, 251, 0.65);
+}
+
+body {
+  font-family: "Space Grotesk", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: var(--hms-text);
+  background: radial-gradient(circle at 20% 20%, rgba(124, 93, 255, 0.15), transparent 45%),
+    radial-gradient(circle at 80% 0%, rgba(32, 227, 178, 0.18), transparent 35%),
+    var(--hms-bg);
+  min-height: 100vh;
+  margin: 0;
+}
+
+* {
+  font-family: inherit;
+}
+
+h1, h2, h3, h4, h5, h6, p, span, div, a, button, label, input, select, textarea {
+  font-family: "Space Grotesk", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.app-body {
+  position: relative;
+  overflow-x: hidden;
+}
+
+.aurora {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle at 10% 20%, rgba(124, 93, 255, 0.3), transparent 35%),
+    radial-gradient(circle at 80% 0%, rgba(32, 227, 178, 0.25), transparent 40%),
+    radial-gradient(circle at 80% 80%, rgba(255, 99, 132, 0.15), transparent 40%);
+  filter: blur(80px);
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.app-shell {
+  width: min(1200px, 92vw);
+  margin: 0 auto;
+}
+
+.glass-nav {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--hms-outline);
+  background: rgba(3, 6, 23, 0.85);
+  padding: 1rem 0;
+}
+
+.brand-mark {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  color: var(--hms-text);
+}
+
+.brand-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: linear-gradient(140deg, var(--hms-primary), var(--hms-secondary));
+  display: grid;
+  place-items: center;
+  font-weight: 600;
+  font-size: 1.2rem;
+  color: #050915;
+}
+
+.brand-title {
+  letter-spacing: 0.05em;
+  font-weight: 600;
+}
+
+.ghost-link {
+  color: var(--hms-muted);
+  text-decoration: none;
+  padding: 0.45rem 1.1rem;
+  border-radius: 999px;
+  transition: color 0.2s, background 0.2s;
+}
+
+.ghost-link:hover {
+  color: var(--hms-text);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.pill-btn {
+  border-radius: 999px;
+  background: linear-gradient(120deg, var(--hms-primary), var(--hms-secondary));
+  border: none;
+  color: #050915;
+  font-weight: 600;
+  padding: 0.5rem 1.4rem;
+  text-align: center;
+  display: inline-block;
+}
+
+.pill-outline {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: var(--hms-text);
+}
+
+.pill-outline:hover {
+  border-color: var(--hms-text);
+}
+
+.card,
+.stat-card,
+.department-tile {
+  background: var(--hms-panel);
+  border: 1px solid var(--hms-outline);
+  border-radius: 1.25rem;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+  color: var(--hms-text);
+  font-family: "Space Grotesk", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.card-body {
+  color: var(--hms-text);
+  font-family: "Space Grotesk", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.card-body p,
+.card-body .text-muted,
+.card-body .text-muted-50 {
+  color: var(--hms-muted);
+  font-family: "Space Grotesk", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.card-header {
+  border-bottom: 1px solid var(--hms-outline);
+  background: transparent;
+  color: var(--hms-text);
+}
+
+.card-header h2,
+.card-header h6,
+.card-header .h6 {
+  color: var(--hms-text);
+  font-family: "Space Grotesk", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.btn,
+.btn-primary {
+  border-radius: 999px;
+  border: none;
+  background: linear-gradient(120deg, var(--hms-primary), var(--hms-secondary));
+  color: #050915;
+}
+
+.btn-outline-primary,
+.btn-outline-danger,
+.btn-outline-secondary {
+  border-radius: 999px;
+  border: 1px solid var(--hms-outline);
+  color: var(--hms-text);
+  background: transparent;
+}
+
+.table {
+  color: var(--hms-text);
+}
+
+.table thead {
+  color: var(--hms-muted);
+}
+
+.table-striped > tbody > tr:nth-of-type(odd) > * {
+  background-color: rgba(255, 255, 255, 0.02);
+}
+
+.table-hover > tbody > tr:hover > * {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.custom-alert {
+  border-radius: 1rem;
+  border: 1px solid var(--hms-outline);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--hms-text);
+}
+
+.form-control,
+.form-select,
+select,
+textarea {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--hms-outline);
+  color: var(--hms-text);
+  border-radius: 0.85rem;
+}
+
+.form-select option,
+select option {
+  background-color: #050915;
+  color: var(--hms-text);
+}
+
+.form-control:focus,
+.form-select:focus,
+select:focus,
+textarea:focus {
+  box-shadow: 0 0 0 0.2rem rgba(124, 93, 255, 0.25);
+  border-color: var(--hms-primary);
+}
+
+.text-muted-50 {
+  color: var(--hms-muted) !important;
+}
+
+.department-tile {
+  padding: 1.25rem;
+}
+
+.stat-card .display-6 {
+  font-weight: 600;
+}
+
+footer {
+  border-top: 1px solid var(--hms-outline);
+}
+

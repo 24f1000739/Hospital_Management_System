@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}Department of {{ department.name }}{% endblock %}
+{% block content %}
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="h4 mb-0">Department of {{ department.name }}</h1>
+    <div>
+      <a href="{{ url_for('patient_history_view') }}" class="btn btn-link">History</a>
+      <a href="{{ url_for('logout') }}" class="btn btn-link">Logout</a>
+    </div>
+  </div>
+
+  <div class="card shadow-sm mb-4">
+    <div class="card-body">
+      <h2 class="h6 mb-3">Overview</h2>
+      <p>{{ department.description or 'No description available for this department.' }}</p>
+    </div>
+  </div>
+
+  <div class="card shadow-sm">
+    <div class="card-header">
+      <h2 class="h6 mb-0">Doctors' List</h2>
+    </div>
+    <div class="card-body">
+      <div class="row g-3">
+        {% for doctor in doctors %}
+          <div class="col-md-6">
+            <div class="card">
+              <div class="card-body">
+                <h3 class="h6">Dr. {{ doctor.full_name }}</h3>
+                <p class="small text-muted">{{ doctor.specialization or 'General' }}</p>
+                <div class="btn-group">
+                  <a href="{{ url_for('doctor_availability_view', doctor_id=doctor.id) }}" class="btn btn-sm btn-outline-primary">Check Availability</a>
+                  <a href="{{ url_for('doctor_profile', doctor_id=doctor.id) }}" class="btn btn-sm btn-primary">View Details</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        {% else %}
+          <div class="col-12">
+            <p class="text-muted text-center">No doctors available in this department.</p>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+{% endblock %}
+

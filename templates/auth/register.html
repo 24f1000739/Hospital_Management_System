@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Register | HMS{% endblock %}
+{% block content %}
+  <div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h2 class="h4 mb-3 text-center">Patient Registration</h2>
+          <p class="text-muted small text-center">Patients can register</p>
+          <form method="post">
+            <div class="mb-3">
+              <label class="form-label">Username</label>
+              <input type="text" name="username" class="form-control" placeholder="Enter username or email" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Password</label>
+              <input type="password" name="password" class="form-control" required>
+            </div>
+            <div class="d-grid">
+              <button class="btn btn-primary">Register</button>
+            </div>
+          </form>
+          <p class="text-center small mt-3">Already have an account? <a href="{{ url_for('login') }}">Login</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+

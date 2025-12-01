@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}Patient History{% endblock %}
+{% block content %}
+  <div class="card shadow-sm">
+    <div class="card-header">
+      <div class="d-flex justify-content-between align-items-center">
+        <div>
+          <h2 class="h6 mb-1">Patient History</h2>
+          <p class="mb-0"><strong>Patient Name:</strong> {{ patient.full_name }}</p>
+          <p class="mb-0"><strong>Doctor's Name:</strong> Dr. {{ doctor.full_name }}</p>
+          <p class="mb-0"><strong>Department:</strong> {{ doctor.department.name if doctor.department else 'General' }}</p>
+        </div>
+        <a href="{{ url_for('dashboard') }}" class="btn btn-sm btn-outline-secondary">Back</a>
+      </div>
+    </div>
+    <div class="card-body">
+      {% if history %}
+        <div class="table-responsive">
+          <table class="table table-sm table-bordered">
+            <thead>
+              <tr>
+                <th>Visit No.</th>
+                <th>Visit Type</th>
+                <th>Tests Done</th>
+                <th>Diagnosis</th>
+                <th>Prescription</th>
+                <th>Medicines</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for appt in history %}
+                <tr>
+                  <td>{{ loop.index }}</td>
+                  <td>{{ appt.treatment_record.visit_type | default('In-person', true) }}</td>
+                  <td class="text-wrap" style="white-space: pre-wrap;">{{ appt.treatment_record.test_done | default('-', true) | replace('\n', '<br>') | safe }}</td>
+                  <td class="text-wrap" style="white-space: pre-wrap;">{{ appt.treatment_record.diagnosis | default('-', true) | replace('\n', '<br>') | safe }}</td>
+                  <td class="text-wrap" style="white-space: pre-wrap;">{{ appt.treatment_record.prescription | default('-', true) | replace('\n', '<br>') | safe }}</td>
+                  <td class="text-wrap" style="white-space: pre-wrap;">{{ appt.treatment_record.medicines | default('-', true) | replace('\n', '<br>') | safe }}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      {% else %}
+        <p class="text-muted text-center">No history available.</p>
+      {% endif %}
+    </div>
+  </div>
+{% endblock %}
+

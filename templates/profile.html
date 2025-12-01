@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block title %}Profile | HMS{% endblock %}
+{% block content %}
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h2 class="h5 mb-3">Profile Settings</h2>
+          <form method="post">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label class="form-label">Full Name</label>
+                  <input type="text" name="full_name" class="form-control" value="{{ g.user.full_name }}" required>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label class="form-label">Phone</label>
+                  <input type="text" name="phone" class="form-control" value="{{ g.user.phone or '' }}">
+                </div>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Email</label>
+              <input type="email" class="form-control" value="{{ g.user.email }}" disabled>
+            </div>
+
+            {% if g.user.role == 'doctor' %}
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="mb-3">
+                    <label class="form-label">Specialization</label>
+                    <input type="text" name="specialization" class="form-control" value="{{ g.user.specialization or '' }}">
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="mb-3">
+                    <label class="form-label">Experience (years)</label>
+                    <input type="number" name="experience_years" min="0" class="form-control" value="{{ g.user.experience_years or '' }}">
+                  </div>
+                </div>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Department</label>
+                <select name="department_id" class="form-select">
+                  <option value="">Select department</option>
+                  {% for dept in departments %}
+                    <option value="{{ dept.id }}" {% if g.user.department_id == dept.id %}selected{% endif %}>
+                      {{ dept.name }}
+                    </option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Bio</label>
+                <textarea name="bio" class="form-control" rows="3">{{ g.user.bio or '' }}</textarea>
+              </div>
+            {% endif %}
+
+            <div class="d-grid">
+              <button class="btn btn-primary">Save Changes</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+

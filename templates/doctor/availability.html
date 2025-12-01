@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block title %}Doctor's Availability{% endblock %}
+{% block content %}
+  <div class="card shadow-sm">
+    <div class="card-header">
+      <h2 class="h6 mb-0">Doctor's Availability</h2>
+    </div>
+    <div class="card-body">
+      <form method="post">
+        <div class="mb-3">
+          <p class="text-muted small">7 days availability to be provided. Time schedule can be fixed time slots for morning and evening each.</p>
+        </div>
+        
+        <div class="table-responsive">
+          <table class="table table-sm table-bordered">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Morning Slot</th>
+                <th>Evening Slot</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for day_date in dates_list %}
+                {% set morning_slot = "08:00 - 12:00 am" %}
+                {% set evening_slot = "04:00 - 9:00 pm" %}
+                {% set morning_slots = [] %}
+                {% set evening_slots = [] %}
+                {% if availability_by_date and day_date in availability_by_date %}
+                  {% for slot in availability_by_date[day_date] %}
+                    {% if slot.slot_label == morning_slot %}
+                      {% if morning_slots.append(1) %}{% endif %}
+                    {% endif %}
+                    {% if slot.slot_label == evening_slot %}
+                      {% if evening_slots.append(1) %}{% endif %}
+                    {% endif %}
+                  {% endfor %}
+                {% endif %}
+                <tr>
+                  <td>{{ day_date.strftime('%d/%m/%Y') }}</td>
+                  <td>
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" name="morning_{{ day_date.strftime('%Y-%m-%d') }}" value="08:00 - 12:00 am" id="morning_{{ day_date.strftime('%Y-%m-%d') }}" {% if morning_slots %}checked{% endif %}>
+                      <label class="form-check-label" for="morning_{{ day_date.strftime('%Y-%m-%d') }}">
+                        08:00 - 12:00 am
+                      </label>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" name="evening_{{ day_date.strftime('%Y-%m-%d') }}" value="04:00 - 9:00 pm" id="evening_{{ day_date.strftime('%Y-%m-%d') }}" {% if evening_slots %}checked{% endif %}>
+                      <label class="form-check-label" for="evening_{{ day_date.strftime('%Y-%m-%d') }}">
+                        04:00 - 9:00 pm
+                      </label>
+                    </div>
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        
+        <div class="d-grid mt-3">
+          <button type="submit" class="btn btn-primary">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+{% endblock %}

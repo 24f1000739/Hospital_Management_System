@@ -404,7 +404,7 @@ def logout():
     flash("Logged out successfully.", "info")
     return redirect(url_for("login"))
 
-
+# Milestone: Admin Dashboard and Management
 @app.route("/dashboard")
 @login_required()
 def dashboard():
